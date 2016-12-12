@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>todo example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.7.2/jquery.serializejson.min.js"></script>
+    <script src="../lib/jquery.aa.js"></script>
+</head>
+<body>
+
+<ul aa-render="todoList.todos date">
+    {{#todos}}  
+        <li>
+            <span>{{title}}</span>
+            <span>{{description}}</span>
+            <span>{{today}}</span>
+            <button aa-click="deleteTodo({{@index}}), alert('{{title}} deleted.')">x</button>
+        </li>
+    {{/todos}}
+</ul>
+
+<form aa-submit="addTodo($el)">
+    <input type="text" name="title">
+    <input type="text" name="description">
+    <button type="submit">add</button>
+</form>
+
+<div>
+    <span aa-render="todoList">total : {{ todos.length }}</span>
+    <button aa-click="clearTodos, alert('clear!')">clear</button>
+</div>
+
+<button type="button" id="clear">clear</button>
+
+<script>
+    $.aa.set({
+        todoList: {
+            todo : []
+        },
+        date: {
+            today : function(){
+                return (new Date()).toLocaleDateString();
+            }
+        }
+    });
+
+    $.aa.on({
+        addTodo : function($form){
+            values = $form.serializeJSON();
+
+            $.aa.get('todoList.todos').push(values);
+            $.aa.render('todoList.todos');
+        },
+
+        deleteTodo:function(index){
+            $.aa.get('todoList.todos').splice(index, 1);
+            $.aa.render('todoList.todos');  
+        },
+
+        clearTodos: function(){
+            $.aa.set('todoList.todos', []);
+            $.aa.render();
+        },
+
+        alert: function(message){
+            alert(message);
+        }
+    });
+
+    $('#clear').click(function(){
+        $.aa.emit('clearTodos');
+        return false;
+    });
+
+    $('body').aa();
+</script>
+</body>
+</html>

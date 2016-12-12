@@ -42,7 +42,8 @@ var config = {
   },
   plugins: plugins,
   externals: {
-    "jquery": "jQuery"
+    "jquery": "jQuery",
+    "ustache": "Mustache"
   },
 };
 
