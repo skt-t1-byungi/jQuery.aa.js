@@ -20,7 +20,7 @@ if (env === 'build') {
 
 var config = {
   entry: __dirname + '/src/index.js',
-  devtool: 'source-map',
+  devtool: env === 'build' ? 'hidden-source-map' : 'source-map',
   output: {
     path: __dirname + '/lib',
     filename: outputFile,
