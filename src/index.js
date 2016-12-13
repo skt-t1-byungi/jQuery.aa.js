@@ -9,8 +9,10 @@ import regeistredTemplates from 'var/regeistredTemplates';
 const emitter = $.aa = new EventEmitter();
 
 //렌더 함수 추가
-emitter.render = function(...dataPaths) {
+emitter.render = function(dataPaths) {
     let templates;
+
+    dataPaths = dataPaths.split(/\s+/);
 
     if (dataPaths.length > 0) {
         templates = regeistredTemplates.getByDataPath(...dataPaths);
