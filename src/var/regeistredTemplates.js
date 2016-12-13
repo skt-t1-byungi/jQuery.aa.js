@@ -13,8 +13,7 @@ class Templates {
         dataPaths.forEach(path => {
             this.registerd
                 .forEach(item => {
-
-                    for (let listenDataPath of item.listenDataPaths) {
+                    item.listenDataPaths.forEach(listenDataPath => {
                         if (
                             path.indexOf(listenDataPath) === 0 &&
                             arr.indexOf(item) === -1
@@ -22,7 +21,7 @@ class Templates {
                             arr.push(item);
                             return;
                         }
-                    }
+                    });
                 });
         });
 

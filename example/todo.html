@@ -9,13 +9,13 @@
 </head>
 <body>
 
-<ul aa-render="todoList date">
+<ul aa-render="todoList helpers" >
     {{#todos}}  
         <li>
+            <span>{{todoListIndex}}</span>
             <span>{{title}}</span>
             <span>{{description}}</span>
-            <span>{{today}}</span>
-            <button aa-click="deleteTodo({{@index}}), alert('{{title}} deleted.')">x</button>
+            <button aa-click="deleteTodo({{todoListIndex}}), alert('{{title}} deleted.')">x</todoListIndex>
         </li>
     {{/todos}}
 </ul>
@@ -38,9 +38,9 @@
         todoList: {
             todos : []
         },
-        date: {
-            today : function(){
-                return (new Date()).toLocaleDateString();
+        helpers: {
+            todoListIndex : function(){
+                return $.aa.get('todoList.todos').indexOf(this);
             }
         }
     });
@@ -58,7 +58,7 @@
         },
 
         deleteTodo:function(index){
-            $.aa.get('todoList.todos').splice(index-1, 1);
+            $.aa.get('todoList.todos').splice(index, 1);
             $.aa.render('todoList.todos');  
         },
 
