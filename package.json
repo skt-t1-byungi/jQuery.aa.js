@@ -1,7 +1,7 @@
 {
   "name": "jquery.aa.js",
-  "version": "0.0.1",
-  "description": "simple jquery template",
+  "version": "1.0.1",
+  "description": "simple view plugin by jquery, mustache",
   "main": "dist/jquery.aa.js",
   "scripts": {
     "build": "webpack --mode=build --production --optimize-minimize",
