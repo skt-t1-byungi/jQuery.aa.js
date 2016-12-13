@@ -1,3 +1,11 @@
+function isContainNotations(triggers, listens) {
+    return triggers.some(trigger => {
+        return listens.some(listen => {
+            return trigger.indexOf(listen) === 0;
+        });
+    });
+}
+
 class Templates {
     constructor() {
         this.registerd = [];
@@ -7,25 +15,11 @@ class Templates {
         this.registerd.push({ $el, listenDataPaths, templateHtml });
     }
 
-    getByDataPath(...dataPaths) {
-        const arr = [];
-
-        dataPaths.forEach(path => {
-            this.registerd
-                .forEach(item => {
-                    item.listenDataPaths.forEach(listenDataPath => {
-                        if (
-                            path.indexOf(listenDataPath) === 0 &&
-                            arr.indexOf(item) === -1
-                        ) {
-                            arr.push(item);
-                            return;
-                        }
-                    });
-                });
-        });
-
-        return arr;
+    getByDataPaths(dataPaths = []) {
+        return this.registerd
+            .filter(item => {
+                return isContainNotations(dataPaths, item.listenDataPaths);
+            });
     }
 
     getAll() {

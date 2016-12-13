@@ -1,6 +1,5 @@
 import $ from 'jquery';
 import EventEmitter from 'wolfy87-eventemitter';
-import dots from 'dot-notes';
 
 let userData = {};
 
@@ -20,21 +19,21 @@ export default class extends EventEmitter {
         return this;
     }
 
-    get(key = null) {
+    getData(key = null) {
         if (key) {
-            return dots.get(userData, key);
+            return $.dots.get(userData, key);
         }
 
         return userData;
     }
 
-    set(key, val) {
+    setData(key, val) {
         if ($.isPlainObject(key)) {
             for (let i in key) {
-                this.set(i, key[i]);
+                this.setData(i, key[i]);
             }
         } else {
-            dots.create(userData, key, val);
+            $.dots.create(userData, key, val);
         }
 
         return this;

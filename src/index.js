@@ -1,35 +1,42 @@
+//external
 import $ from 'jquery';
 import mustache from 'mustache';
 
-import EventEmitter from 'EventEmitter';
+//npm
+import dots from 'dot-notes';
+import EventEmitter from 'wolfy87-eventemitter';
+
+//src
+import API from 'API';
 import EventAttrParser from 'Parser/EventAttr';
 import definedEvents from 'var/definedEvents';
 import regeistredTemplates from 'var/regeistredTemplates';
 
-const emitter = $.aa = new EventEmitter();
+//의존 라이브러리 jquery 내장
+$.dots = dots;
+$.EventEmitter = EventEmitter;
 
-//렌더 함수 추가
-emitter.render = function(dataPaths) {
+//aa api생성
+const api = $.aa = new API();
+
+//렌더 함수 추*가
+api.render = function(dataPaths = '*') {
     let templates;
 
-    dataPaths = dataPaths.split(/\s+/);
-
-    if (dataPaths.length > 0) {
-        templates = regeistredTemplates.getByDataPath(...dataPaths);
-    } else {
+    if (!dataPaths || dataPaths === '*') {
         templates = regeistredTemplates.getAll();
+    } else {
+        templates = regeistredTemplates.getByDataPaths(dataPaths.split(/\s+/));
     }
 
     templates.forEach(({ $el, listenDataPaths, templateHtml }) => {
         let data = {};
 
         listenDataPaths.forEach(path => {
-            $.extend(data, emitter.get(path));
+            $.extend(data, api.getData(path));
         });
 
-        const rendered = mustache.render(templateHtml, data);
-
-        $el.html(rendered);
+        $el.html(mustache.render(templateHtml, data));
     });
 };
 
@@ -56,7 +63,7 @@ $.fn.aa = function(immediatelyRender = true) {
             }
 
             parser.parse(event).forEach((item) => {
-                emitter.trigger(item.name, item.params);
+                api.trigger(item.name, item.params);
             });
         });
     });
@@ -76,6 +83,6 @@ $.fn.aa = function(immediatelyRender = true) {
     });
 
     if (immediatelyRender) {
-        emitter.render();
+        api.render();
     }
 };

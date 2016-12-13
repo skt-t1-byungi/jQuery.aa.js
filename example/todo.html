@@ -9,38 +9,40 @@
 </head>
 <body>
 
-<ul aa-render="todoList helpers" >
+<ul aa-render="todoList helpers" ><!--todoList, helpers merging.-->
+    <h1>TODO:</h1>
     {{#todos}}  
         <li>
             <span>{{todoListIndex}}</span>
-            <span>{{title}}</span>
-            <span>{{description}}</span>
-            <button aa-click="deleteTodo({{todoListIndex}}), alert('{{title}} deleted.')">x</todoListIndex>
+            <span>title : {{title}}</span>
+            <span>description : {{description}}</span>
+            <button aa-click="deleteTodo({{todoListIndex}}), alert('{{title}} deleted.')">x</button>
         </li>
     {{/todos}}
 </ul>
 
 <form aa-submit="addTodo($el), prevent($event)">
-    <input type="text" name="title">
-    <input type="text" name="description">
+    <h2>ADD:</h2>
+    <label>title: <input type="text" name="title"></label>
+    <label>description: <input type="text" name="description"></label>
     <button type="submit">add</button>
 </form>
 
 <div>
     <span aa-render="todoList">total : {{ todos.length }}</span>
-    <button aa-click="clearTodos, alert('clear!')">clear</button>
+    <button aa-click="clearTodos, alert('clear!')">clear1</button>
 </div>
 
-<button type="button" id="clear">clear</button>
+<button type="button" id="clear">clear2</button>
 
 <script>
-    $.aa.set({
+    $.aa.setData({
         todoList: {
             todos : []
         },
         helpers: {
             todoListIndex : function(){
-                return $.aa.get('todoList.todos').indexOf(this);
+                return $.aa.getData('todoList.todos').indexOf(this) + 1;
             }
         }
     });
@@ -53,17 +55,24 @@
         addTodo : function($form){
             values = $form.serializeJSON();
 
-            $.aa.get('todoList.todos').push(values);
+            if(values.title.trim() === '' || values.description.trim() === ''){
+                alert('fill inputs!');
+                return;
+            }
+
+            $form.find('input').val('');
+
+            $.aa.getData('todoList.todos').push(values);
             $.aa.render('todoList.todos');
         },
 
-        deleteTodo:function(index){
-            $.aa.get('todoList.todos').splice(index, 1);
+        deleteTodo:function(num){
+            $.aa.getData('todoList.todos').splice(num-1, 1);
             $.aa.render('todoList.todos');  
         },
 
         clearTodos: function(){
-            $.aa.set('todoList.todos', []);
+            $.aa.setData('todoList.todos', []);
             $.aa.render();
         },
 
