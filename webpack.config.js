@@ -1,11 +1,14 @@
 var webpack = require('webpack');
 var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+var BannerPlugin = require("webpack/lib/BannerPlugin");
 var path = require('path');
 var env = require('yargs').argv.mode;
 
 var libraryName = 'jquery.aa';
 
-var plugins = [],
+var plugins = [
+    new BannerPlugin('jQuery.aa.js\nsertion@innorix.com\nhttps://github.com/skt-t1-byungi/jQuery.aa.js')
+  ],
   outputFile;
 
 if (env === 'build') {
@@ -43,7 +46,7 @@ var config = {
   plugins: plugins,
   externals: {
     "jquery": "jQuery",
-    "ustache": "Mustache"
+    "mustache": "Mustache"
   },
 };
 

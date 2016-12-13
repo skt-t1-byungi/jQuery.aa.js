@@ -1,58 +1,51 @@
-const EVENT_EXPANDO = '_$EVENT_' + Date.now();
+const REGEX_EVENT_EXPR = /^\s*(\w+)(\(.*?\))?/;
+const REGEX_EVENT_EXPR_WITH_DELIMITER = /^\s*\w+(\(.*?\))?\s*,?\s*/;
 
 export default class {
-    constructor($el, expr, emitter) {
+    constructor($el, expr) {
         this.$el = $el;
-        this.emitter = emitter;
-        this.parsed = this.parse(expr);
-        // this.$event = null;
+        this.expr = expr.trim();
     }
 
-    parse(expr) {
-        return this
-            .extractNames(expr)
-            .map(name => {
-                const regex = new RegExp(`^\s*${name}(\([^)]*\))?\s*,?`);
-                const matched = expr.match(regex);
+    parse(event) {
+        let expr = this.expr;
+        const parsed = [];
 
-                let params = [];
+        do {
+            const [, name, paramsExpr] = expr.match(REGEX_EVENT_EXPR);
 
-                //param 존재할경
-                if (matched.length > 1) {
-                    params = matched[1]
-                        .slice(1, -1) //괄호제거
-                        .split(',')
-                        .map(param => {
-                            param = param.trim();
+            parsed.push({
+                name,
+                params: this.parseParams(event, paramsExpr)
+            });
 
-                            if (param === '$el') {
-                                return this.$el;
-                            }
+            expr = expr.replace(REGEX_EVENT_EXPR_WITH_DELIMITER, '');
+        } while (expr !== '');
 
-                            if (param === '$event') {
-                                return EVENT_EXPANDO;
-                            }
+        return parsed;
+    }
 
-                            return eval(param);
-                        });
+    parseParams(event, paramsExpr = '()') {
+        return paramsExpr
+            .slice(1, -1) //괄호제거
+            .split(',')
+            .map(param => {
+                param = param.trim();
+
+                if (param === '$el') {
+                    return this.$el;
                 }
 
-                expr.replace(regex, ''); // 순서대로 parsing 끝난 요소 제거
+                if (param === '$event') {
+                    return event;
+                }
 
-                return { name, params };
+                try {
+                    return eval(param);
+                } catch (e) {
+                    return param;
+                }
             });
     }
 
-    extractNames(expr) {
-        return expr.replace(/\([^)]*\)/g, '') //괄호제거제거
-            .split(',')
-            .map(str => str.trim());
-    }
-
-    trigger(event) {
-        this.parsed.forEach(item => {
-            let params = item.params.map(param => param === EVENT_EXPANDO ? event : param);
-            this.emitter.trigger(item.name, params);
-        });
-    }
 }
