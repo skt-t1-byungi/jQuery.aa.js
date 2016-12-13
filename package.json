@@ -1,10 +1,10 @@
 {
   "name": "jquery.aa.js",
   "version": "0.0.1",
-  "description": "indicate the jquery event on the tag",
-  "main": "lib/jquery.aa.js",
+  "description": "simple jquery template",
+  "main": "dist/jquery.aa.js",
   "scripts": {
-    "build": "webpack --mode=build",
+    "build": "webpack --mode=build --production --optimize-minimize",
     "dev": "webpack --progress --colors --watch --mode=dev",
     "test": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
