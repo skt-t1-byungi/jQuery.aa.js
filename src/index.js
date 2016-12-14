@@ -1,6 +1,6 @@
 //external
 import $ from 'jquery';
-import mustache from 'mustache';
+import handlebars from 'handlebars';
 
 //npm
 import objectPath from 'object-path';
@@ -31,14 +31,14 @@ api.render = function(...dataPaths) {
         templates = regeistredTemplates.getByDataPaths(dataPaths.split(/\s+/));
     }
 
-    templates.forEach(({ $el, listenDataPaths, templateHtml }) => {
+    templates.forEach(({ $el, listenDataPaths, template }) => {
         let data = {};
 
         listenDataPaths.forEach(path => {
             $.extend(data, api.getData(path));
         });
 
-        $el.html(mustache.render(templateHtml, data));
+        $el.html(template(data));
     });
 };
 
@@ -74,11 +74,10 @@ $.fn.aa = function(immediatelyRender = true) {
     $templates.each(function() {
         const $template = $(this);
         const listenDataPaths = $template.attr('aa-render').split(/\s+/);
-        const templateHtml = $template.html();
+        const template = handlebars.compile($template.html());
 
-        //pre parsing
-        mustache.parse(templateHtml);
-        regeistredTemplates.add($template, listenDataPaths, templateHtml);
+        //register
+        regeistredTemplates.add($template, listenDataPaths, template);
 
         //template remove
         $template.html('');

@@ -48,7 +48,7 @@ var config = {
   plugins: plugins,
   externals: {
     "jquery": "jQuery",
-    "mustache": "Mustache"
+    "handlebars": "Handlebars"
   },
 };
 

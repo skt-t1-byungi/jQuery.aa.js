@@ -3,9 +3,9 @@
 <head>
     <title>todo example</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.serializeJSON/2.7.2/jquery.serializejson.min.js"></script>
-    <script src="../lib/jquery.aa.js"></script>
+     <script src="../lib/jquery.aa.js"></script>    
 </head>
 <body>
 
@@ -29,8 +29,14 @@
 </form>
 
 <div>
-    <span aa-render="todoList">total : {{ todos.length }}</span>
-    <button aa-click="clearTodos, alert('clear!')">clear1</button>
+    <span aa-render="todoList">
+        {{#if todos.length}}
+            total : {{ todos.length }}
+        {{else}}
+            empty!!!
+        {{/if}}
+    </span>
+    <button aa-click="clearTodos, alert('clear!')">clear</button>
 </div>
 
 <button type="button" id="clear">clear2</button>

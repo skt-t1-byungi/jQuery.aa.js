@@ -12,8 +12,8 @@ class Templates {
         this.registerd = [];
     }
 
-    add($el, listenDataPaths, templateHtml) {
-        this.registerd.push({ $el, listenDataPaths, templateHtml });
+    add($el, listenDataPaths, template) {
+        this.registerd.push({ $el, listenDataPaths, template });
     }
 
     getByDataPaths(dataPaths = []) {
