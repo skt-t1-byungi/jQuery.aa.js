@@ -111,6 +111,8 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
     }, 1000);
 </script>
 ```
+[demo](https://fiddle.jshell.net/ys2px9Lk/)
+
 `[aa-render]`를 가진 태그 내부는 mustache 문법으로 작성하면 됩니다.
 
 `[aa-render]` 속성값은 `$.aa.set`으로 넣은 data를 바라봅니다. 
@@ -132,6 +134,8 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
     })
 </script>
 ```
+[demo](https://fiddle.jshell.net/c2u0dx9k/2/)
+
 button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 
 바인딩하고자 하는 `[aa-"eventName"]`으로 속성값을 작성하고  value에 `$.aa.on`으로 등록한 이벤트를 쓰면 됩니다. 
@@ -152,7 +156,6 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     })
 </script>
 ```
-
 `,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요.
 
 `$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
@@ -187,6 +190,8 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     });
 </script>
 ```
+[demo](https://fiddle.jshell.net/k63pknL6/)
+
 카운트 예제입니다. `[aa-render]`와 `$.aa.render`의 인자값이 동일하지 않더라도 상관관계라면 갱신을 합니다.
 
 #### 5 multiple data bind, helper
@@ -263,3 +268,4 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 ### solution
 
 use modern framework(vue.js, react.js, angular.js..) -_-
+
