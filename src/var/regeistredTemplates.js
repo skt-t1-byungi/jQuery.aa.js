@@ -1,7 +1,8 @@
-function isContainNotations(triggers, listens) {
+function isContatinEachOther(triggers, listens) {
     return triggers.some(trigger => {
         return listens.some(listen => {
-            return trigger.indexOf(listen) === 0;
+            const [long, short] = trigger.length > listen.length ? [trigger, listen] : [listen, trigger];
+            return long.indexOf(short) === 0;
         });
     });
 }
@@ -18,7 +19,7 @@ class Templates {
     getByDataPaths(dataPaths = []) {
         return this.registerd
             .filter(item => {
-                return isContainNotations(dataPaths, item.listenDataPaths);
+                return isContatinEachOther(dataPaths, item.listenDataPaths);
             });
     }
 
