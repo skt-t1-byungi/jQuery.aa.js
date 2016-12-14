@@ -249,8 +249,8 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
         <span>{{age}}</span>
     </div>
     <div aa-render="john.compay">
-        <span>{{company.name}}</span>
-        <span>{{company.location}}</span>
+        <span>{{name}}</span>
+        <span>{{location}}</span>
     </div>
 </div>
 ```
