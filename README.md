@@ -111,7 +111,7 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
     }, 1000);
 </script>
 ```
-[demo](https://fiddle.jshell.net/ys2px9Lk/)
+[view demo](https://fiddle.jshell.net/ys2px9Lk/)
 
 `[aa-render]`를 가진 태그 내부는 mustache 문법으로 작성하면 됩니다.
 
@@ -134,7 +134,7 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
     })
 </script>
 ```
-[demo](https://fiddle.jshell.net/c2u0dx9k/2/)
+[view demo](https://fiddle.jshell.net/c2u0dx9k/2/)
 
 button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 
@@ -190,7 +190,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     });
 </script>
 ```
-[demo](https://fiddle.jshell.net/k63pknL6/)
+[view demo](https://fiddle.jshell.net/k63pknL6/)
 
 카운트 예제입니다. `[aa-render]`와 `$.aa.render`의 인자값이 동일하지 않더라도 상관관계라면 갱신을 합니다.
 
