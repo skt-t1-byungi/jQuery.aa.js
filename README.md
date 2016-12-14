@@ -190,7 +190,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     });
 </script>
 ```
-[view demo](https://fiddle.jshell.net/k63pknL6/)
+[view demo](https://fiddle.jshell.net/k63pknL6/2/)
 
 카운트 예제입니다. `[aa-render]`와 `$.aa.render`의 인자값이 동일하지 않더라도 상관관계라면 갱신을 합니다.
 
