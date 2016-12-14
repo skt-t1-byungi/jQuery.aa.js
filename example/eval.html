@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>counter exampel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <script src="../lib/jquery.aa.js"></script>    
+</head>
+<body>
+    <section>
+        <span aa-render="test _helper">
+            1 is {{ #eval }} this.val === 1 ? 'true' : 'false' {{/eval}}
+            2 is {{ #eval }} this.val === 2 ? 'true' : 'false' {{/eval}}
+            3 is {{ #eval }} this.val === 3 ? 'true' : 'false' {{/eval}}
+            4 is {{ #eval }} this.val === 4 ? 'true' : 'false' {{/eval}}
+            5 is {{ #eval }} this.val === 5 ? 'true' : 'false' {{/eval}}
+        </span>
+    </section>
+
+    <script>
+        $.aa.setData('test', { val: 3 });
+        $(document).aa();
+    </script>
+</body>
+</html>

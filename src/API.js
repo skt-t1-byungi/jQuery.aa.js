@@ -1,7 +1,10 @@
 import $ from 'jquery';
 import EventEmitter from 'wolfy87-eventemitter';
+import helpers from 'helpers';
 
-let userData = {};
+let userData = {
+    _helper: helpers
+};
 
 export default class extends EventEmitter {
     on(...params) {
