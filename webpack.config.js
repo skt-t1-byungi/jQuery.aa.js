@@ -3,11 +3,13 @@ var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
 var BannerPlugin = require("webpack/lib/BannerPlugin");
 var path = require('path');
 var env = require('yargs').argv.mode;
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 var libraryName = 'jquery.aa';
 
 var plugins = [
-    new BannerPlugin('jQuery.aa.js\nsertion@innorix.com\nhttps://github.com/skt-t1-byungi/jQuery.aa.js')
+    new BannerPlugin('jQuery.aa.js\nsertion@innorix.com\nhttps://github.com/skt-t1-byungi/jQuery.aa.js'),
+    // new BundleAnalyzerPlugin()
   ],
   outputFile;
 

@@ -3,7 +3,7 @@ import $ from 'jquery';
 import mustache from 'mustache';
 
 //npm
-import dots from 'dot-notes';
+import objectPath from 'object-path';
 import EventEmitter from 'wolfy87-eventemitter';
 
 //src
@@ -13,15 +13,17 @@ import definedEvents from 'var/definedEvents';
 import regeistredTemplates from 'var/regeistredTemplates';
 
 //의존 라이브러리 jquery 내장
-$.dots = dots;
+$.objectPath = objectPath;
 $.EventEmitter = EventEmitter;
 
 //aa api생성
 const api = $.aa = new API();
 
 //렌더 함수 추*가
-api.render = function(dataPaths = '*') {
+api.render = function(...dataPaths) {
     let templates;
+
+    dataPaths = dataPaths.join(' ').trim();
 
     if (!dataPaths || dataPaths === '*') {
         templates = regeistredTemplates.getAll();
@@ -42,10 +44,10 @@ api.render = function(dataPaths = '*') {
 
 //jquery
 $.fn.aa = function(immediatelyRender = true) {
-    const $tempaltes = this.find('[aa-render]');
+    const $templates = this.find('[aa-render]');
 
     //nested 구조 지원하지 않음.
-    if ($tempaltes.find('[aa-render]').length > 0) {
+    if ($templates.find('[aa-render]').length > 0) {
         console.error('not support nested [aa-rendoer]');
         return;
     }
@@ -69,7 +71,7 @@ $.fn.aa = function(immediatelyRender = true) {
     });
 
     //템플릿 등록
-    $tempaltes.each(function() {
+    $templates.each(function() {
         const $template = $(this);
         const listenDataPaths = $template.attr('aa-render').split(/\s+/);
         const templateHtml = $template.html();

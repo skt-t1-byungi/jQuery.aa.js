@@ -21,7 +21,7 @@ export default class extends EventEmitter {
 
     getData(key = null) {
         if (key) {
-            return $.dots.get(userData, key);
+            return $.objectPath.get(userData, key);
         }
 
         return userData;
@@ -33,9 +33,13 @@ export default class extends EventEmitter {
                 this.setData(i, key[i]);
             }
         } else {
-            $.dots.create(userData, key, val);
+            $.objectPath.set(userData, key, val);
         }
 
         return this;
+    }
+
+    hasData(key) {
+        return $.objectPath.has(userData, key);
     }
 }

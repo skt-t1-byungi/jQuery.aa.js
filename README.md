@@ -22,10 +22,10 @@ jquery를 사용하면서 백본보다는 코드가 구려져도 좀더 빠른 �
 #### (injected)
 
 * [Olical/EventEmitter](https://github.com/Olical/EventEmitter)
-* [dot-notes-js](https://github.com/zackehh/dot-notes-js)
+* [mariocasciaro/object-path](https://github.com/mariocasciaro/object-path)
 
 
-useable via `$.EventEmitter`, `$.dots`.
+useable via `$.EventEmitter`, `$.objectPath`.
 
 ## used
 
@@ -46,12 +46,14 @@ $.aa.setData({
 });
 
 //used dot notation
-$.aa.getData('object.example[1]') // === 2
+$.aa.getData('object.example.1') // === 2
 ```
 
 `$.aa`에서 제공하는 내부 데이터 객체는 하나 뿐(`glabal signletone`)입니다.
 
-네임스페이스(`namespace`)를 잘 활용하는 것을 추천함.
+네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
+
+`$.aa`는 [mariocasciaro/object-path](https://github.com/mariocasciaro/object-path)을 사용해서 `$.aa.setData`, `$.aa.getData`,`$.aa.hasData`를 제공합니다.
 
 
 ### event
@@ -78,29 +80,38 @@ $.aa.on({
 
 네임스페이스(`namespace`)를 잘화용하는 것을 추천합니다.
 
+`$.aa`는 기본적으로 [Olical/EventEmitter](https://github.com/Olical/EventEmitter)을 상속받아 확장(exntend) 구현되었습니다. 
+
+EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
+
 
 ### template(mustache) render
 
 #### basic example
 
-name changes after 1 second.
-
 ```html
-<span aa-render="person">{{ name }}</span> <!-- output, john -->
-
+<!-- name changes after 1 second.-->
+<span aa-render="person">{{ name }}</span> 
 <script>
     $.aa.setData('person', { name: 'john' });
     
-    //render start, inside body tag. recommend document object. just call it once.
+    //render start, inside body. recommend document. 
+    //just call it once.
     $('body').aa(); 
     
     setTimeout(function(){
         $.aa.setData('person.name', 'mina');
-        $.aa.render('person'); // rerender start. parameter is [aa-render] value. if empty, run it all element.
+
+        // rerender start. 
+        // parameter is [aa-render] value. 
+        // if empty, run it all element.
+        $.aa.render('person'); 
     }, 1000);
 </script>
 ```
-`[aa-render]`를 가진 element태그의 innerHtml은 mustache의 template html로 사용됩니다. 따라서 mustache 문법으로 작성하면 됩니다.
+`[aa-render]`를 가진 element태그의 innerHtml은 mustache의 template html로 사용됩니다. 
+
+따라서 mustache 문법으로 작성하면 됩니다.
 
 `[aa-render]` 값은 $.aa의 data를 바라봅니다.
 
@@ -137,6 +148,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     })
 </script>
 ```
+
 `,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요.
 
 `$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
