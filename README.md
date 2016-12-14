@@ -78,7 +78,7 @@ $.aa.on({
 ```
 역시 제공하는 이벤트 객체는 하나 뿐(`glabal signletone`)입니다.
 
-네임스페이스(`namespace`)를 잘화용하는 것을 추천합니다.
+네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
 
 `$.aa`는 기본적으로 [Olical/EventEmitter](https://github.com/Olical/EventEmitter)을 상속받아 확장(exntend) 구현되었습니다. 
 
