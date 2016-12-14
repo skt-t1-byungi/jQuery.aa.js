@@ -27,6 +27,7 @@ jquery를 사용하면서 백본보다는 코드가 구려져도 좀더 빠른 �
 
 useable via `$.EventEmitter`, `$.objectPath`.
 
+---
 ## used
 
 ### data
@@ -51,7 +52,7 @@ $.aa.getData('object.example.1') // === 2
 
 `$.aa`에서 제공하는 내부 데이터 객체는 하나 뿐(`glabal signletone`)입니다.
 
-네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
+하나 뿐이니 중복이 발생하지 않도록 네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
 
 `$.aa`는 [mariocasciaro/object-path](https://github.com/mariocasciaro/object-path)을 사용해서 `$.aa.setData`, `$.aa.getData`,`$.aa.hasData`를 제공합니다.
 
@@ -85,9 +86,10 @@ $.aa.on({
 EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 
 
-### template(mustache) render
 
-#### basic example
+### template(mustache)
+
+#### 1 basic example
 
 ```html
 <!-- name changes after 1 second.-->
@@ -95,7 +97,7 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 <script>
     $.aa.setData('person', { name: 'john' });
     
-    //render start, inside body. recommend document. 
+    //render start, inside body. (recommend document object) 
     //just call it once.
     $('body').aa(); 
     
@@ -109,14 +111,16 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
     }, 1000);
 </script>
 ```
-`[aa-render]`를 가진 element태그의 innerHtml은 mustache의 template html로 사용됩니다. 
+`[aa-render]`를 가진 태그 내부는 mustache 문법으로 작성하면 됩니다.
 
-따라서 mustache 문법으로 작성하면 됩니다.
+`[aa-render]` 속성값은 `$.aa.set`으로 넣은 data를 바라봅니다. 
 
-`[aa-render]` 값은 $.aa의 data를 바라봅니다.
+여기선 $('body').aa() 전에 미리 person 데이터를 준비했기 때문에 바로 jonh이 출력되지만 $('body').aa() 후에 데이터를 주입했다면,
+
+`$.aa.render`을 사용해서 템플릿을 갱신해야 합니다.
 
 
-#### event bind example
+#### 2 event bind example
 
 ```html
 <button aa-click="openMessage('hi')">click</button>
@@ -130,9 +134,9 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 ```
 button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 
-바인딩하고자 하는 `[aa-"eventName"]`으로 attribute을 작성하고  value에 `$.aa.on`으로 등록한 이벤트를 쓰면 됩니다. 
+바인딩하고자 하는 `[aa-"eventName"]`으로 속성값을 작성하고  value에 `$.aa.on`으로 등록한 이벤트를 쓰면 됩니다. 
 
-#### multi event, $event, $el
+#### 3 multiple trigger, $event, $el
 ```html
 <button aa-click="test1, test2($el, $event)">click</button>
 <script>
@@ -154,7 +158,108 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 `$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
 
 
-#### mixed example
+#### 4 mixed example
 ```html
-```
+<!--counter example-->
+<section>
+    <span aa-render="counter">hit: {{ hit }}</span>
+    <button aa-click="increament">+</button>
+    <button aa-click="decreament">-</button>
+</section>
 
+<script>
+    $(document).aa();
+
+    $.aa.setData('counter', {
+        hit : 0
+    });
+
+    $.aa.render();
+
+    $.aa.on('increament', function(){
+        $.aa.setData('counter.hit', $.aa.getData('counter.hit') + 1);
+        $.aa.render('counter.hit');
+    });
+
+    $.aa.on('decreament', function(){
+        $.aa.setData('counter.hit', $.aa.getData('counter.hit') - 1);
+        $.aa.render('counter.hit');
+    });
+</script>
+```
+카운트 예제입니다. `[aa-render]`와 `$.aa.render`의 인자값이 동일하지 않더라도 상관관계라면 갱신을 합니다.
+
+#### 5 multiple data bind, helper
+
+```html
+<span aa-render="test _helper">
+    1 is {{ #eval }} this.val === 1 ? 'true' : 'false' {{/eval}}
+    2 is {{ #eval }} this.val === 2 ? 'true' : 'false' {{/eval}}
+    3 is {{ #eval }} this.val === 3 ? 'true' : 'false' {{/eval}}
+    4 is {{ #eval }} this.val === 4 ? 'true' : 'false' {{/eval}}
+    5 is {{ #eval }} this.val === 5 ? 'true' : 'false' {{/eval}}
+</span>
+<script>
+    $.aa.setData('test', { val: 3 });
+    $(document).aa();
+</script>
+
+<!-- output :
+ 1 is false 2 is false 3 is true 4 is false 5 is false
+-->
+```
+`[aa-render]`속성값을 공백을 통해 여러 데이터를 바인딩할 수도 있습니다. `e.g) [aa-render="data1.list data2.name"]` 
+
+`_helper`는 `$.aa` 내부 데이터에 미리 mustache에 쓰기 적합한 헬퍼 함수를 정의한 객체입니다.
+
+여러 데이터를 바인딩 할수 있는 점을 통해 데이터객체에 헬퍼함수를 작성하고 템플릿에 불러와 사용할 수 있습니다.
+
+---
+## problems
+
+### not support nested.
+
+```html
+<!--not working-->
+<div aa-render="data1">
+    {{ name }}
+    <span aa-render="data2">{{ key }}</span>
+</div>
+```
+`[aa-render]` 안에 `[aa-render]`를 다시 사용할 수 없습니다. (날코딩용이니깐 너무 많은 것들을 기대하마쇼.)
+
+최대한 aa-render 태그 크기를 작게 잡는 것을 추천합니다. `(<body aa-render="..">) is hell.`
+
+```html
+<!-- not good -->
+<div aa-render="john">
+    <div>
+        <span>{{info.name}}</span>
+        <span>{{info.age}}</span>
+    </div>
+    <div>
+        <span>{{company.name}}</span>
+        <span>{{company.location}}</span>
+    </div>
+</div>
+<!--better-->
+<div>
+    <div aa-render="john.info">
+        <span>{{name}}</span>
+        <span>{{age}}</span>
+    </div>
+    <div aa-render="john.compay">
+        <span>{{company.name}}</span>
+        <span>{{company.location}}</span>
+    </div>
+</div>
+```
+(위에도 나쁘진 않은 것 같은데, 크기를 작게 잡는 것에 대한 예를 들기위해..)
+
+### flicker
+
+렌더링할때 aa-render 내부를 전부 바꾸기 때문에 깜박임이 존재할 수 있고, 기존 element를 모두 없애는 문제가 있다.
+
+### solution
+
+use modern framework(vue.js, react.js, angular.js..) -_-
