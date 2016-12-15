@@ -51,7 +51,7 @@ api.start = () => {
 };
 
 //jquery
-$.fn.aa = function(immediatelyRender = true) {
+$.fn.aa = (immediatelyRender = true) => {
     const $templates = this.find('[aa-render]');
 
     //nested 구조 지원하지 않음.
@@ -83,7 +83,7 @@ $.fn.aa = function(immediatelyRender = true) {
     });
 
     //템플릿 등록
-    $templates.each(function() {
+    $templates.each(() => {
         const $template = $(this);
         const listenDataPaths = $template.attr('aa-render').split(/\s+/);
         const templateHtml = $template.html();
