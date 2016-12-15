@@ -21,7 +21,7 @@
     {{/todos}}
 </ul>
 
-<form aa-submit="addTodo($el), prevent($event)">
+<form aa-submit="addTodo($el), @prevent">
     <h2>ADD:</h2>
     <label>title: <input type="text" name="title"></label>
     <label>description: <input type="text" name="description"></label>
@@ -48,10 +48,6 @@
     });
 
     $.aa.on({
-        prevent: function(e){
-            e.preventDefault();
-        },
-
         addTodo : function($form){
             values = $form.serializeJSON();
 

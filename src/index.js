@@ -11,6 +11,7 @@ import API from 'API';
 import EventAttrParser from 'Parser/EventAttr';
 import definedEvents from 'var/definedEvents';
 import regeistredTemplates from 'var/regeistredTemplates';
+import eventHelpers from 'helpers/event';
 
 //의존 라이브러리 jquery 내장
 $.objectPath = objectPath;
@@ -67,6 +68,10 @@ $.fn.aa = function(immediatelyRender = true) {
             }
 
             parser.parse(event).forEach((item) => {
+                if (item.name in eventHelpers) {
+                    eventHelpers[item.name].call($el, event, ...item.params);
+                }
+
                 api.trigger(item.name, item.params);
             });
         });

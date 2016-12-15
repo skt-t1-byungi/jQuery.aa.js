@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import EventEmitter from 'wolfy87-eventemitter';
-import helpers from 'helpers';
+import helpers from 'helpers/template';
 
 let userData = {
     _helper: helpers
