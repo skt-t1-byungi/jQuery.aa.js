@@ -1,5 +1,5 @@
-const REGEX_EVENT_EXPR = /^\s*([^, ()]+)(\(.*?\))?/;
-const REGEX_EVENT_EXPR_WITH_DELIMITER = /^\s*[^, ()]+(\(.*?\))?\s*,?\s*/;
+const REGEX_EVENT_EXPR = /^\s*([^, (]+)(\(.*?\))?/;
+const REGEX_EVENT_EXPR_WITH_DELIMITER = /^\s*[^, (]+(\(.*?\))?\s*,?\s*/;
 
 export default class {
     constructor($el, expr) {
