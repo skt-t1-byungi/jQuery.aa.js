@@ -142,7 +142,9 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다. 바인딩하�
     });
 </script>
 ```
-`,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요. `$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
+`,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요. 
+
+`$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
 
 `@prevent`는 `[aa-"eventName"]`에만 제공되는 헬퍼 함수입니다. 기본이벤트를 막습니다. 버블링까지 막고자할 때에는 `@stop`을 사용하세요.
 
