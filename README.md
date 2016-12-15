@@ -126,9 +126,9 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 
 button을 click하면 "hi"내용이 담긴 alert창이 뜹니다. 바인딩하고자 하는 `[aa-"eventName"]`으로 속성값을 작성하고  value에 `$.aa.on`으로 등록한 이벤트를 쓰면 됩니다. 
 
-#### 3 multiple trigger, $event, $el
+#### 3 multiple trigger, $event, $el, helper
 ```html
-<button aa-click="test1, test2($el, $event)">click</button>
+<button aa-click="test1, test2($el, $event), @prevent">click</button>
 <script>
     $.aa.start();
     
@@ -142,9 +142,9 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다. 바인딩하�
     });
 </script>
 ```
-`,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요.
+`,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요. `$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
 
-`$el`, `$event`을 통해 jquery element, jquery event 객체를 전달 받을 수 있습니다.
+`@prevent`는 `[aa-"eventName"]`에만 제공되는 헬퍼 함수입니다. 기본이벤트를 막습니다. 버블링까지 막고자할 때에는 `@stop`을 사용하세요.
 
 
 #### 4 mixed example
