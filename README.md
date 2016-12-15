@@ -105,7 +105,7 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
     }, 1000);
 </script>
 ```
-[view demo](https://fiddle.jshell.net/ys2px9Lk/)
+[view demo](https://fiddle.jshell.net/ys2px9Lk/1/)
 
 `[aa-render]`를 가진 태그 내부는 mustache 문법으로 작성하면 됩니다. `[aa-render]` 속성값은 `$.aa.set`으로 넣은 data를 바라봅니다. 여기선 $('body').aa() 전에 미리 person 데이터를 준비했기 때문에 바로 jonh이 출력되지만, $('body').aa() 후에 데이터를 주입했다면, `$.aa.render`을 사용해서 템플릿을 갱신해야 합니다.
 
