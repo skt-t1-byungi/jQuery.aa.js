@@ -277,6 +277,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     display: block;
 }
 ```
+css통해 카바가능
 
 ### best solution
 
