@@ -9,29 +9,28 @@
 <body>
     <section>
         <span aa-render="counter">hit: {{ hit }}</span>
-        <button aa-click="increament">+</button>
-        <button aa-click="decreament">-</button>
+        <button aa-click="increment">+</button>
+        <button aa-click="decrement">-</button>
     </section>
 
     <script>
-        $(document).aa();
+        var $$ = $.aa;
 
-        $.aa.setData('counter', {
-            hit : 0
+        $$.start();
+
+        $$.set('counter', {hit : 0});
+
+        $$.render();
+
+        $$.on('increment', function(){
+            $$.increment('counter.hit');
+            $$.render('counter.hit');
         });
 
-        $.aa.render();
-
-        $.aa.on('increament', function(){
-            $.aa.setData('counter.hit', $.aa.getData('counter.hit') + 1);
-            $.aa.render('counter.hit');
+        $$.on('decrement', function(){
+            $$.decrement('counter.hit');
+            $$.render('counter.hit');
         });
-
-        $.aa.on('decreament', function(){
-            $.aa.setData('counter.hit', $.aa.getData('counter.hit') - 1);
-            $.aa.render('counter.hit');
-        });
-
     </script>
 </body>
 </html>

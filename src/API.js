@@ -2,6 +2,7 @@ import $ from 'jquery';
 import EventEmitter from 'wolfy87-eventemitter';
 import helpers from 'helpers/template';
 import regeistredTemplates from 'var/regeistredTemplates';
+import mustache from 'mustache';
 
 let userData = {
     _helper: helpers
@@ -28,7 +29,7 @@ export default class extends EventEmitter {
             let data = {};
 
             listenDataPaths.forEach(path => {
-                $.extend(data, api.get(path));
+                $.extend(data, this.get(path));
             });
 
             $el
@@ -74,11 +75,15 @@ export default class extends EventEmitter {
         return this;
     }
 
+    unset(path) {
+        $.objectPath.del(userData, path);
+    }
+
     has(path) {
         return $.objectPath.has(userData, path);
     }
 
-    update(path, fn) {
+    modify(path, fn) {
         const val = this.get(path);
 
         this.set(path, fn(val));
@@ -91,7 +96,7 @@ export default class extends EventEmitter {
             return;
         }
 
-        this.update(path, v => v + step);
+        this.modify(path, v => v + step);
     }
 
     decrement(path, step = 1) {
@@ -99,10 +104,11 @@ export default class extends EventEmitter {
             return;
         }
 
-        this.update(path, v => v - step);
+        this.modify(path, v => v - step);
     }
 
-    rename(path) {
-        //todo
+    rename(path, newPath) {
+        this.set(newPath, this.get(path));
+        this.unset(newPath);
     }
 }

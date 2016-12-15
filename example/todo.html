@@ -36,18 +36,23 @@
 <button type="button" id="clear">clear2</button>
 
 <script>
-    $.aa.setData({
+    var $$ = $.aa;
+
+    $$.start();
+
+    $$.set({
         todoList: {
             todos : []
         },
         helpers: {
             todoListIndex : function(){
-                return $.aa.getData('todoList.todos').indexOf(this) + 1;
+                var todos = $$.get('todoList.todos');
+                return todos.indexOf(this) + 1;
             }
         }
     });
 
-    $.aa.on({
+    $$.on({
         addTodo : function($form){
             values = $form.serializeJSON();
 
@@ -58,18 +63,18 @@
 
             $form.find('input').val('');
 
-            $.aa.getData('todoList.todos').push(values);
-            $.aa.render('todoList.todos');
+            $$.get('todoList.todos').push(values);
+            $$.render('todoList.todos');
         },
 
         deleteTodo:function(num){
-            $.aa.getData('todoList.todos').splice(num-1, 1);
-            $.aa.render('todoList.todos');  
+            $$.get('todoList.todos').splice(num-1, 1);
+            $$.render('todoList.todos');  
         },
 
         clearTodos: function(){
-            $.aa.setData('todoList.todos', []);
-            $.aa.render();
+            $$.set('todoList.todos', []);
+            $$.render();
         },
 
         alert: function(message){
@@ -78,11 +83,10 @@
     });
 
     $('#clear').click(function(){
-        $.aa.emit('clearTodos');
+        $$.emit('clearTodos');
         return false;
     });
 
-    $(document).aa();
 </script>
 </body>
 </html>
