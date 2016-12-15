@@ -38,7 +38,9 @@ api.render = function(...dataPaths) {
             $.extend(data, api.getData(path));
         });
 
-        $el.html(mustache.render(templateHtml, data));
+        $el
+            .html(mustache.render(templateHtml, data))
+            .addClass('_rendered');
     });
 };
 
@@ -80,8 +82,10 @@ $.fn.aa = function(immediatelyRender = true) {
         mustache.parse(templateHtml);
         regeistredTemplates.add($template, listenDataPaths, templateHtml);
 
+        $template.addClass('_parsed');
+
         //template remove
-        $template.html('');
+        // $template.html('');
     });
 
     if (immediatelyRender) {
