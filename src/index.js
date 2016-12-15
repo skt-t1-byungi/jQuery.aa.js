@@ -20,8 +20,8 @@ $.EventEmitter = EventEmitter;
 //aa api생성
 const api = $.aa = new API();
 
-//렌더 함수 추*가
-api.render = function(...dataPaths) {
+//렌더 함수
+api.render = (...dataPaths) => {
     let templates;
 
     dataPaths = dataPaths.join(' ').trim();
@@ -43,6 +43,11 @@ api.render = function(...dataPaths) {
             .html(mustache.render(templateHtml, data))
             .addClass('_rendered');
     });
+};
+
+//start
+api.start = () => {
+    $(document).aa();
 };
 
 //jquery
