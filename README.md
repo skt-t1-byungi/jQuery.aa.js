@@ -117,7 +117,9 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 
 `[aa-render]` 속성값은 `$.aa.set`으로 넣은 data를 바라봅니다. 
 
-여기선 $('body').aa() 전에 미리 person 데이터를 준비했기 때문에 바로 jonh이 출력되지만 $('body').aa() 후에 데이터를 주입했다면,
+여기선 $('body').aa() 전에 미리 person 데이터를 준비했기 때문에 바로 jonh이 출력되지만,
+
+$('body').aa() 후에 데이터를 주입했다면,
 
 `$.aa.render`을 사용해서 템플릿을 갱신해야 합니다.
 
@@ -265,7 +267,18 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 
 렌더링할때 aa-render 내부를 전부 바꾸기 때문에 깜박임이 존재할 수 있고, 기존 element를 모두 없애는 문제가 있다.
 
-### solution
+### expose mustache code
+```css
+[aa-render]{
+    display: none;
+}
+
+[aa-render]._rendered{
+    display: block;
+}
+```
+
+### best solution
 
 use modern framework(vue.js, react.js, angular.js..) -_-
 
