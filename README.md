@@ -8,9 +8,7 @@ simple view plugin by jquery, mustache
 * backbone is good, but slow work.
 
 최신 프레임웍을 쓰고 싶지만 현실상 어렵고, jquery를 버릴 수 없음. 
-
 백본은 훌륭한 대안이지만 코드가 장황해져서 날코딩에 비해 작업속도가 느려짐.
-
 jquery를 사용하면서 백본보다는 코드가 구려져도 좀더 빠른 코딩이 되는, 중간타협지점이 없을까해서 맹들어봄.
 
 
@@ -34,27 +32,25 @@ useable via `$.EventEmitter`, `$.objectPath`.
 
 ```js
 //data set method
-$.aa.setData('key', 'val');
+$.aa.set('key', 'val');
 
 //data get method
-$.aa.getData('key'); // === 'val'
+$.aa.get('key'); // === 'val'
 
 //used object param
-$.aa.setData({
+$.aa.set({
     'object' : {
         example: [1, 2]
     }
 });
 
 //used dot notation
-$.aa.getData('object.example.1') // === 2
+$.aa.get('object.example.1'); // === 2
 ```
 
-`$.aa`에서 제공하는 내부 데이터 객체는 하나 뿐(`glabal signletone`)입니다.
+`$.aa`에서 제공하는 내부 데이터 객체는 하나 뿐(`glabal signletone`)입니다. 하나 뿐이니 중복이 발생하지 않도록 네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
 
-하나 뿐이니 중복이 발생하지 않도록 네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
-
-`$.aa`는 [mariocasciaro/object-path](https://github.com/mariocasciaro/object-path)을 사용해서 `$.aa.setData`, `$.aa.getData`,`$.aa.hasData`를 제공합니다.
+`$.aa`는 [mariocasciaro/object-path](https://github.com/mariocasciaro/object-path)을 이용해 구현되어진 `$.aa.set`, `$.aa.unset`, `$.aa.get`, `$.aa.has`, `$.aa.modify`, `$.aa.increment`, `$.aa.decrement`, `$.aa.rename`메소드등을 제공합니다.
 
 
 ### event
@@ -78,11 +74,9 @@ $.aa.on({
 });
 ```
 역시 제공하는 이벤트 객체는 하나 뿐(`glabal signletone`)입니다.
-
 네임스페이스(`namespace`)를 잘 활용하는 것을 추천합니다.
 
 `$.aa`는 기본적으로 [Olical/EventEmitter](https://github.com/Olical/EventEmitter)을 상속받아 확장(exntend) 구현되었습니다. 
-
 EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 
 
@@ -95,14 +89,14 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 <!-- name changes after 1 second.-->
 <span aa-render="person">{{ name }}</span> 
 <script>
-    $.aa.setData('person', { name: 'john' });
+    $.aa.set('person', { name: 'john' });
     
     //render start, inside body. (recommend document object) 
     //just call it once.
     $('body').aa(); 
     
     setTimeout(function(){
-        $.aa.setData('person.name', 'mina');
+        $.aa.set('person.name', 'mina');
 
         // rerender start. 
         // parameter is [aa-render] value. 
@@ -113,15 +107,7 @@ EventEmitter의 모든 메소드들을 그대로 사용가능합니다.
 ```
 [view demo](https://fiddle.jshell.net/ys2px9Lk/)
 
-`[aa-render]`를 가진 태그 내부는 mustache 문법으로 작성하면 됩니다.
-
-`[aa-render]` 속성값은 `$.aa.set`으로 넣은 data를 바라봅니다. 
-
-여기선 $('body').aa() 전에 미리 person 데이터를 준비했기 때문에 바로 jonh이 출력되지만,
-
-$('body').aa() 후에 데이터를 주입했다면,
-
-`$.aa.render`을 사용해서 템플릿을 갱신해야 합니다.
+`[aa-render]`를 가진 태그 내부는 mustache 문법으로 작성하면 됩니다. `[aa-render]` 속성값은 `$.aa.set`으로 넣은 data를 바라봅니다. 여기선 $('body').aa() 전에 미리 person 데이터를 준비했기 때문에 바로 jonh이 출력되지만, $('body').aa() 후에 데이터를 주입했다면, `$.aa.render`을 사용해서 템플릿을 갱신해야 합니다.
 
 
 #### 2 event bind example
@@ -129,24 +115,22 @@ $('body').aa() 후에 데이터를 주입했다면,
 ```html
 <button aa-click="openMessage('hi')">click</button>
 <script>
-    $(document).aa(); 
+    $.aa.start(); // == $(document).aa(); 
     
     $.aa.on('openMessage', function(message){
         alert(message); 
-    })
+    });
 </script>
 ```
-[view demo](https://fiddle.jshell.net/c2u0dx9k/2/)
+[view demo](https://fiddle.jshell.net/c2u0dx9k/3/)
 
-button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
-
-바인딩하고자 하는 `[aa-"eventName"]`으로 속성값을 작성하고  value에 `$.aa.on`으로 등록한 이벤트를 쓰면 됩니다. 
+button을 click하면 "hi"내용이 담긴 alert창이 뜹니다. 바인딩하고자 하는 `[aa-"eventName"]`으로 속성값을 작성하고  value에 `$.aa.on`으로 등록한 이벤트를 쓰면 됩니다. 
 
 #### 3 multiple trigger, $event, $el
 ```html
 <button aa-click="test1, test2($el, $event)">click</button>
 <script>
-    $(document).aa(); 
+    $.aa.start();
     
     $.aa.on({
         test1: function(){
@@ -155,7 +139,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
         test2: function($btn, $event){
             console.log($btn === $('button')); // true
         }
-    })
+    });
 </script>
 ```
 `,`을 통해 여러 이벤트를 실행할 수 있습니다. 인자가 없으면 `()`을 생락할 수도 있구요.
@@ -168,31 +152,31 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 <!--counter example-->
 <section>
     <span aa-render="counter">hit: {{ hit }}</span>
-    <button aa-click="increament">+</button>
-    <button aa-click="decreament">-</button>
+    <button aa-click="increment">+</button>
+    <button aa-click="decrement">-</button>
 </section>
 
 <script>
-    $(document).aa();
+    var $$ = $.aa; //손가락아픔
 
-    $.aa.setData('counter', {
-        hit : 0
+    $$.start();
+
+    $$.set('counter', {hit : 0});
+
+    $$.render();
+
+    $$.on('increment', function(){
+        $$.increment('counter.hit');
+        $$.render('counter.hit');
     });
 
-    $.aa.render();
-
-    $.aa.on('increament', function(){
-        $.aa.setData('counter.hit', $.aa.getData('counter.hit') + 1);
-        $.aa.render('counter.hit');
-    });
-
-    $.aa.on('decreament', function(){
-        $.aa.setData('counter.hit', $.aa.getData('counter.hit') - 1);
-        $.aa.render('counter.hit');
+    $$.on('decrement', function(){
+        $$.decrement('counter.hit');
+        $$.render('counter.hit');
     });
 </script>
 ```
-[view demo](https://fiddle.jshell.net/k63pknL6/2/)
+[view demo](https://fiddle.jshell.net/k63pknL6/3/)
 
 카운트 예제입니다. `[aa-render]`와 `$.aa.render`의 인자값이 동일하지 않더라도 상관관계라면 갱신을 합니다.
 
@@ -207,8 +191,8 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     5 is {{ #eval }} this.val === 5 ? 'true' : 'false' {{/eval}}
 </span>
 <script>
-    $.aa.setData('test', { val: 3 });
-    $(document).aa();
+    $.aa.set('test', { val: 3 });
+    $.aa.start();
 </script>
 
 <!-- output :
@@ -217,9 +201,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
 ```
 `[aa-render]`속성값을 공백을 통해 여러 데이터를 바인딩할 수도 있습니다. `e.g) [aa-render="data1.list data2.name"]` 
 
-`_helper`는 `$.aa` 내부 데이터에 미리 mustache에 쓰기 적합한 헬퍼 함수를 정의한 객체입니다.
-
-여러 데이터를 바인딩 할수 있는 점을 통해 데이터객체에 헬퍼함수를 작성하고 템플릿에 불러와 사용할 수 있습니다.
+`_helper`는 `$.aa` 내부 데이터에 미리 mustache에 쓰기 적합한 헬퍼 함수를 정의한 객체입니다. 여러 데이터를 바인딩 할수 있는 점을 통해 데이터객체에 헬퍼함수를 작성하고 템플릿에 불러와 사용할 수 있습니다.
 
 ---
 ## problems
@@ -233,7 +215,7 @@ button을 click하면 "hi"내용이 담긴 alert창이 뜹니다.
     <span aa-render="data2">{{ key }}</span>
 </div>
 ```
-`[aa-render]` 안에 `[aa-render]`를 다시 사용할 수 없습니다. (날코딩용이니깐 너무 많은 것들을 기대하마쇼.)
+`[aa-render]` 안에 `[aa-render]`를 다시 사용할 수 없습니다. (날코딩용이니깐 너무 많은 것들을 기대하마쇼.) 
 
 최대한 aa-render 태그 크기를 작게 잡는 것을 추천합니다. `(<body aa-render="..">) is hell.`
 
