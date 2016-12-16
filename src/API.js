@@ -59,7 +59,6 @@ export default class extends EventEmitter {
         if (path) {
             return $.objectPath.get(userData, path);
         }
-
         return userData;
     }
 
@@ -71,12 +70,12 @@ export default class extends EventEmitter {
         } else {
             $.objectPath.set(userData, path, val);
         }
-
         return this;
     }
 
     unset(path) {
         $.objectPath.del(userData, path);
+        return this;
     }
 
     has(path) {
@@ -85,30 +84,28 @@ export default class extends EventEmitter {
 
     modify(path, fn) {
         const val = this.get(path);
-
         this.set(path, fn(val));
-
         return this;
     }
 
     increment(path, step = 1) {
-        if (!this.has(path)) {
-            return;
+        if (this.has(path)) {
+            this.modify(path, v => v + step);
         }
-
-        this.modify(path, v => v + step);
+        return this;
     }
 
     decrement(path, step = 1) {
-        if (!this.has(path)) {
-            return;
+        if (this.has(path)) {
+            this.modify(path, v => v - step);
         }
-
-        this.modify(path, v => v - step);
+        return this;
     }
 
     rename(path, newPath) {
         this.set(newPath, this.get(path));
-        this.unset(newPath);
+        this.unset(path);
+
+        return this;
     }
 }
