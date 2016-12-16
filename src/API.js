@@ -55,9 +55,9 @@ export default class extends EventEmitter {
         return this;
     }
 
-    get(path = null) {
+    get(path = null, defaults = undefined) {
         if (path) {
-            return $.objectPath.get(userData, path);
+            return $.objectPath.get(userData, path, defaults);
         }
         return userData;
     }
@@ -105,6 +105,13 @@ export default class extends EventEmitter {
     rename(path, newPath) {
         this.set(newPath, this.get(path));
         this.unset(path);
+
+        return this;
+    }
+
+    extend(path, ...values) {
+        const data = this.get(path, {});
+        this.set(path, $.extend(data, ...values));
 
         return this;
     }
