@@ -33,7 +33,7 @@ $.fn.aa = function(immediatelyRender = true) {
     //이벤트 버블 바인딩
     definedEvents.forEach(evtName => {
         this.on(evtName, `[aa-${evtName}]`, event => {
-            const $el = $(event.target);
+            const $el = $(event.currentTarget);
             let parser = $el.data(`aa-${evtName}`);
 
             if (!parser) {
