@@ -27,9 +27,9 @@ export default class {
     }
 
     parseParams(event, paramsExpr = '()') {
-        return paramsExpr
-            .slice(1, -1) //괄호제거
-            .match(REGEX_EVENT_PARAMS)
+        return (paramsExpr
+                .slice(1, -1) //괄호제거
+                .match(REGEX_EVENT_PARAMS) || [])
             .map(param => {
                 param = param.trim();
 
