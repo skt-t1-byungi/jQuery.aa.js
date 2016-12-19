@@ -1,6 +1,5 @@
 const REGEX_EVENT_EXPR = /^\s*([^, (]+)(\(.*?\))?/;
 const REGEX_EVENT_EXPR_WITH_DELIMITER = /^\s*[^, (]+(\(.*?\))?\s*,?\s*/;
-const REGEX_EVENT_PARAMS = /\s*(?:(?=({|\[))[^}\]]+[}\]]|[^,]+)/g;
 
 export default class {
     constructor($el, expr) {
@@ -27,26 +26,12 @@ export default class {
     }
 
     parseParams(event, paramsExpr = '()') {
-        return (paramsExpr
-                .slice(1, -1) //괄호제거
-                .match(REGEX_EVENT_PARAMS) || [])
-            .map(param => {
-                param = param.trim();
+        paramsExpr = paramsExpr
+            .slice(1, -1) //괄호제거;
+            .replace(/\$event/g, 'event')
+            .replace(/\$el/g, 'this.$el');
 
-                if (param === '$el') {
-                    return this.$el;
-                }
-
-                if (param === '$event') {
-                    return event;
-                }
-
-                try {
-                    return eval(param);
-                } catch (e) {
-                    return param;
-                }
-            });
+        return eval(`[${paramsExpr}]`);
     }
 
 }
