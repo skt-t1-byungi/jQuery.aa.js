@@ -2,7 +2,6 @@ import { isRelatedPath } from 'util';
 
 const _listenHandlers = {};
 
-
 export function dispatch(path, type, ...params) {
     const handlers = [];
 
@@ -10,6 +9,10 @@ export function dispatch(path, type, ...params) {
     for (let listenPath in _listenHandlers) {
         if (!isRelatedPath(path, listenPath)) {
             continue;
+        }
+
+        if (path !== listenPath) {
+            type = 'change';
         }
 
         for (let item of _listenHandlers[listenPath]) {
