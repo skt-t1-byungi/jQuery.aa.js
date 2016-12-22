@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>counter exampel</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mustache.js/2.3.0/mustache.min.js"></script>
+    <script src="../lib/jquery.aa.js"></script>    
+</head>
+<body>
+    <section>
+        <span aa-render="person">{{name}}</span>
+    </section>
+
+    <script>
+        $$.set('person', {name : "john"});
+
+        $$.start();
+
+        $$.render();
+
+        $$.listen('person', function(){
+            $$.render('person.name');
+        });
+
+        setTimeout(function(){
+            $$.set('person.name', 'mina');
+            // $$.render('person.name');
+        }, 1000);
+
+    </script>
+</body>
+</html>

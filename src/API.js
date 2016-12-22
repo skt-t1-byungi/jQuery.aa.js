@@ -3,12 +3,23 @@ import EventEmitter from 'wolfy87-eventemitter';
 import helpers from 'helpers/template';
 import regeistredTemplates from 'var/regeistredTemplates';
 import mustache from 'mustache';
+import { dispatch, listenTo } from 'listenResolver';
 
-let userData = {
+export const LISTEN_SYMBOL = '_LISTEN_' + Math.random().toString(36).slice(-5); //심볼대용
+
+const userData = {
     _helper: helpers
 };
 
 export default class extends EventEmitter {
+
+    constructor(...parmas) {
+        super(...parmas);
+
+        //내부 listen 이벤트
+        this.on(LISTEN_SYMBOL, dispatch);
+    }
+
     start() {
         $(document).aa();
         return this;
@@ -68,13 +79,28 @@ export default class extends EventEmitter {
                 this.set(i, path[i]);
             }
         } else {
+            const prev = this.get(path);
+
             $.objectPath.set(userData, path, val);
+
+            //listen 이벤트
+            if (prev) {
+                this.emit(LISTEN_SYMBOL, path, 'change', prev, val);
+            } else {
+                this.emit(LISTEN_SYMBOL, path, 'set', val);
+            }
         }
         return this;
     }
 
     unset(path) {
+        const prev = this.get(path);
+
         $.objectPath.del(userData, path);
+
+        //listen 이벤트
+        this.emit(LISTEN_SYMBOL, path, 'unset', prev);
+
         return this;
     }
 
@@ -113,6 +139,12 @@ export default class extends EventEmitter {
         const data = this.get(path, {});
         this.set(path, $.extend(data, ...values));
 
+        return this;
+    }
+
+    listen(pathWithType, handler) {
+        const [param, type] = pathWithType.split(':');
+        listenTo(param, type, handler);
         return this;
     }
 }

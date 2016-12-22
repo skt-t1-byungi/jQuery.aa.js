@@ -18,7 +18,7 @@ $.objectPath = objectPath;
 $.EventEmitter = EventEmitter;
 
 //aa api생성
-const api = $.aa = new API();
+const api = window.$$ = $.aa = new API();
 
 //jquery
 $.fn.aa = function(immediatelyRender = true) {

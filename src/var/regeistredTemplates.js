@@ -1,11 +1,4 @@
-function isContatinEachOther(triggers, listens) {
-    return triggers.some(trigger => {
-        return listens.some(listen => {
-            const [long, short] = trigger.length > listen.length ? [trigger, listen] : [listen, trigger];
-            return long.indexOf(short) === 0;
-        });
-    });
-}
+import { isRelatedPathArray } from '../util';
 
 class Templates {
     constructor() {
@@ -19,7 +12,7 @@ class Templates {
     getByDataPaths(dataPaths = []) {
         return this.registerd
             .filter(item => {
-                return isContatinEachOther(dataPaths, item.listenDataPaths);
+                return isRelatedPathArray(dataPaths, item.listenDataPaths);
             });
     }
 
