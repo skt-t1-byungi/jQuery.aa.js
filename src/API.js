@@ -143,8 +143,8 @@ export default class extends EventEmitter {
     }
 
     listen(pathWithType, handler) {
-        const [param, type] = pathWithType.split(':');
-        listenTo(param, type, handler);
+        const [pathExpr, type = '*'] = pathWithType.split(':');
+        listenTo(pathExpr, type, handler);
         return this;
     }
 }

@@ -18,8 +18,8 @@
 
         $$.render();
 
-        $$.listen('person', function(){
-            $$.render('person.name');
+        $$.listen('person.*:*', function(){
+             $$.render('person');
         });
 
         setTimeout(function(){

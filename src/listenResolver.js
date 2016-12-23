@@ -1,22 +1,28 @@
-import { isRelatedPath } from 'util';
-
 const _listenHandlers = {};
+
+function isRelatedPathExpr(expr, path) {
+    //하위 표시자 존재할 경우.
+    const matches = expr.match(/(.*?)\.\*$/);
+    if (matches) {
+        expr = matches[1];
+        return path.indexOf(expr) === 0;
+    } else {
+        return expr === path;
+    }
+}
 
 export function dispatch(path, type, ...params) {
     const handlers = [];
 
     //pick
-    for (let listenPath in _listenHandlers) {
-        if (!isRelatedPath(path, listenPath)) {
+    for (let listenPathExpr in _listenHandlers) {
+
+        if (!isRelatedPathExpr(listenPathExpr, path)) {
             continue;
         }
 
-        if (path !== listenPath) {
-            type = 'change';
-        }
-
-        for (let item of _listenHandlers[listenPath]) {
-            if (item.type === 'all' || item.type === type) {
+        for (let item of _listenHandlers[listenPathExpr]) {
+            if (item.type === '*' || item.type === type) {
                 handlers.push(item.handler);
             }
         }
@@ -28,14 +34,14 @@ export function dispatch(path, type, ...params) {
     }
 }
 
-export function listenTo(path, type, handler) {
-    if (_listenHandlers[path] === undefined) {
-        _listenHandlers[path] = [];
+export function listenTo(pathExpr, type, handler) {
+    if (_listenHandlers[pathExpr] === undefined) {
+        _listenHandlers[pathExpr] = [];
     }
 
-    _listenHandlers[path].push({
+    _listenHandlers[pathExpr].push({
         handler,
-        type: type || 'all'
+        type: type || '*'
     });
 
 }
