@@ -55,7 +55,7 @@ $.fn.aa = function(immediatelyRender = true) {
     //템플릿 등록
     $templates.each((i, el) => {
         const $template = $(el);
-        const listenDataPaths = $template.attr('aa-render').split(/\s+/);
+        const listenDataPaths = $template.attr('aa-render').trim().split(/\s+/);
         const templateHtml = $template.html();
 
         //pre parsing

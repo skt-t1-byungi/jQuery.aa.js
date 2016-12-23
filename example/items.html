@@ -7,11 +7,11 @@
     <script src="../lib/jquery.aa.js"></script>    
 </head>
 <body>
-    <h1 aa-render="page">
+    <h1 aa-render>
         {{title}}
     </h1>
 
-    <ul aa-render="page">
+    <ul aa-render>
         {{#items}}
         <li>{{.}}</li>
         {{/items}}
@@ -19,11 +19,11 @@
 
     <form aa-submit="@prevent, addItem($el)">
         <input type="text" name="text">
-        <button type="submit" aa-render="page">Add # {{nextNumber}}</button>
+        <button type="submit" aa-render>Add # {{nextNumber}}</button>
     </form>
 
     <script>
-        $$.set('page', {
+        $$.set({
             'title' : 'Hello!',
             'items' : [],
             'nextNumber' : function(){
@@ -34,12 +34,12 @@
         $$.on('addItem', function($el){
             var text =  $el.find('[name=text]').val();
             
-            $$.modify('page.items', function(items){
+            $$.modify('items', function(items){
                 items.push(text);
                 return items;
             });
 
-            $$.render('page.items');
+            $$.render('items');
         });
 
         $$.start();
