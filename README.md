@@ -69,3 +69,8 @@ useable via `$.EventEmitter`, `$.objectPath`.
 </script>
 ```
 [view demo](https://jsfiddle.net/rLy6u2b5/)
+
+
+------------------
+
+don't use!
